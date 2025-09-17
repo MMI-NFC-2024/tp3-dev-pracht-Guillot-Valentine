@@ -1,35 +1,42 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import GraphicSpecies from "../components/GraphicSpecies.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
 ---
 
 <Layout>
   <h1 class="text-2xl text-center my-4">Navigation Pingouins</h1>
 
-  <nav class="mt-6 flex justify-center gap-4">
-    <a
-      href="#adelie"
-      class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
-    >
-      Adelie Penguins
-    </a>
-    <a
-      href="#chinstrap"
-      class="px-4 py-2 rounded-lg bg-yellow-600 text-white hover:bg-yellow-700 transition"
-    >
-      Chinstrap Penguins
-    </a>
-    <a
-      href="#gentoo"
-      class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
-    >
-      Gentoo Penguins
-    </a>
-  </nav>
+  <select id="species">
+    <option value="All">All Species</option>
+    <option value="Adelie">Adelie</option>
+    <option value="Chinstrap">Chinstrap</option>
+    <option value="Gentoo">Gentoo</option>
+  </select>
+  <script>
+    document.querySelector("#species")?.addEventListener("change", (evt) => {
+      const value = (evt.target as HTMLSelectElement).value;
+      location.hash = value ? "#" + value.toLowerCase() : "#all";
+    });
+  </script>
 
-  <div
-    class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
-  >
+  <div class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
+    <section id="all" class="flex-shrink-0 w-full snap-center px-4">
+      <h2>All Penguins</h2>
+      <PlotFigure
+        options={{
+          marks: [
+            Plot.dot(penguins, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+            }),
+          ],
+        }}
+      />
+    </section>
     <section id="adelie" class="flex-shrink-0 w-full snap-center px-4">
       <h2>Adelie Penguins</h2>
       <GraphicSpecies species="Adelie" />
