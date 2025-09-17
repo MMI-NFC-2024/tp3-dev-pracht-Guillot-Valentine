@@ -1,0 +1,61 @@
+---
+import Layout from "../layouts/Layout.astro";
+import GraphicSpecies from "../components/GraphicSpecies.astro";
+import PlotFigure from "../components/PlotFigure.astro";
+import * as Plot from "@observablehq/plot";
+import penguins from "../assets/penguins.json";
+import {
+  Tabs,
+  TabsList,
+  TabsTab,
+  TabsPanel,
+} from "accessible-astro-components";
+---
+
+<Layout>
+  <Tabs>
+  <h1 class="text-2xl text-center my-4">Navigation Pingouins</h1>
+
+  <TabsList id="species">
+    <TabsTab id="tab1" controls="all" value="all" selected>All Species</TabsTab>
+    <TabsTab id="tab2" controls="adelie" value="adelie">Adelie</TabsTab>
+    <TabsTab id="tab3" controls="chinstrap" value="chinstrap">Chinstrap</TabsTab>
+    <TabsTab id="tab4" controls="gentoo" value="gentoo">Gentoo</TabsTab>
+  </TabsList>
+  
+    <TabsPanel id="all" labelledby="tab1">
+      <h2>All Penguins</h2>
+      <PlotFigure
+        options={{
+          marks: [
+            Plot.dot(penguins, {
+              x: "culmen_length_mm",
+              y: "culmen_depth_mm",
+              stroke: "species",
+            }),
+          ],
+        }}
+      />
+    </TabsPanel>
+    <TabsPanel id="adelie" labelledby="tab2">
+      <h2>Adelie Penguins</h2>
+      <GraphicSpecies species="Adelie" />
+    </TabsPanel>
+    <TabsPanel id="chinstrap" labelledby="tab3">
+      <h2>Chinstrap Penguins</h2>
+      <GraphicSpecies species="Chinstrap" />
+    </TabsPanel>
+    <TabsPanel id="gentoo" labelledby="tab4">
+      <h2>Gentoo Penguins</h2>
+      <GraphicSpecies species="Gentoo" />
+    </TabsPanel>
+  </Tabs>
+</Layout>
+
+
+<!-- <script>
+    document.querySelector("#species")?.addEventListener("change", (evt) => {
+      const value = (evt.target as HTMLSelectElement).value;
+      location.hash = value ? "#" + value.toLowerCase() : "#all";
+    });
+  </script> -->
