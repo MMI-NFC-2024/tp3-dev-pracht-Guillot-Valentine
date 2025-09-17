@@ -1,0 +1,24 @@
+---
+import Header from "../components/Header.astro";
+import * as Plot from "@observablehq/plot";
+import PlotFigure from "../components/PlotFigure.astro";
+import alphabet from "../assets/alphabet.json";
+---
+
+<Header />
+<div>
+  <h1>Alphabet</h1>
+  <PlotFigure
+    options={{
+      marks: [Plot.barY(alphabet, { x: "letter", y: "frequency" })],
+    }}
+  />
+</div>
+
+<style>
+  h1 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+</style>
